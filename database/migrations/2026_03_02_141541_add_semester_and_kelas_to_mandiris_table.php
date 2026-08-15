@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('ujians', function (Blueprint $table) {
-            $table->dateTime('waktu_mulai')->nullable()->after('tampilkan_hasil');
-            $table->dateTime('waktu_selesai')->nullable()->after('waktu_mulai');
+        Schema::table('mandiris', function (Blueprint $table) {
+            $table->tinyInteger('semester')->after('nama_mapel'); 
+        // isi 1 atau 2
+
+        $table->string('kelas')->after('semester'); 
+        // contoh: X IPA 1, XI IPS 2
+
         });
     }
 
@@ -22,8 +26,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('ujians', function (Blueprint $table) {
-             $table->dropColumn(['waktu_mulai', 'waktu_selesai']);
+        Schema::table('mandiris', function (Blueprint $table) {
+            //
         });
     }
 };

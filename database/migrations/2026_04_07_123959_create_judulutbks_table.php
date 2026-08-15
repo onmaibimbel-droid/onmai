@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('hasils', function (Blueprint $table) {
-             $table->boolean('selesai')->default(false)->after('skor');
+        Schema::create('judulutbks', function (Blueprint $table) {
+            $table->id();
+            $table->string('judul');
+            $table->string('tahun');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('hasils', function (Blueprint $table) {
-            $table->dropColumn('selesai');
-        });
+        Schema::dropIfExists('judulutbks');
     }
 };

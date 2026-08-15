@@ -7,23 +7,40 @@
      <!-- TinyMCE -->
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 <script>
 document.querySelectorAll('.editor').forEach((el) => {
     ClassicEditor.create(el, {
-        toolbar: [
-            'heading',
-            '|',
-            'bold',
-            'italic',
-            'alignment',
-            'bulletedList',
-            'numberedList',
-            '|',
-            'link',
-            'insertTable',
-            'imageUpload', // ⬅️ INI PENTING
-            'emoji'
+    toolbar: [
+        'heading',
+        '|',
+        'bold',
+        'italic',
+        'alignment',
+        'bulletedList',
+        'numberedList',
+        '|',
+        'link',
+        'insertTable',
+        'imageUpload',
+        '|',
+        'undo',
+        'redo',
+        'sourceEditing' // 🔥 penting
+    ],
+
+    // 🔥 WAJIB biar MathJax jalan
+    htmlSupport: {
+        allow: [
+            {
+                name: /.*/,
+                attributes: true,
+                classes: true,
+                styles: true
+            }
         ]
+    }
     }).then(editor => {
         editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
             return new MyUploadAdapter(loader);
@@ -31,6 +48,11 @@ document.querySelectorAll('.editor').forEach((el) => {
     }).catch(error => {
         console.error(error);
     });
+});
+document.addEventListener("input", function () {
+    if (window.MathJax) {
+        MathJax.typesetPromise();
+    }
 });
 </script>
 

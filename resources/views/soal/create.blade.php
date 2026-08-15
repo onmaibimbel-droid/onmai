@@ -108,61 +108,120 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/super-build/ckeditor.js"></script>
 
 <script>
-    function getCsrfToken() {
-        const meta = document.querySelector('meta[name="csrf-token"]');
-        return meta ? meta.getAttribute('content') : '';
-    }
+const editors = {};
 
-    function initEditor(id) {
-        const element = document.getElementById(id);
-        if (!element) return;
+function getCsrfToken() {
+    const meta = document.querySelector('meta[name="csrf-token"]');
+    return meta ? meta.getAttribute('content') : '';
+}
 
-        CKEDITOR.ClassicEditor.create(element, {
-            toolbar: {
-                items: [
-                    'heading', '|', 'bold', 'italic', 'underline', 'subscript', 'superscript', '|',
-                    'bulletedList', 'numberedList', 'blockQuote', 'insertTable', '|',
-                    'insertImage', '|', 
-                    'undo', 'redo', 'sourceEditing'
-                ],
-                shouldNotGroupWhenFull: true
-            },
-            htmlSupport: {
-                allow: [{ name: /.*/, attributes: true, classes: true, styles: true }]
-            },
-            simpleUpload: {
-                uploadUrl: "{{ route('soal.upload') }}", // Route Guru
-                headers: { 'X-CSRF-TOKEN': getCsrfToken() }
-            },
-            image: {
-                resizeUnit: "%",
-                resizeOptions: [
-                    { name: 'resizeImage:original', value: null, label: 'Original' },
-                    { name: 'resizeImage:50', value: '50', label: '50%' },
-                    { name: 'resizeImage:75', value: '75', label: '75%' }
-                ],
-                toolbar: [ 'imageResize', '|', 'toggleImageCaption', 'imageTextAlternative' ]
-            },
-            removePlugins: [
-                'DocumentOutline', 'TableOfContents', 'Pagination', 'WProofreader', 'MathType',
-                'AIAssistant', 'CKBox', 'CKFinder', 'EasyImage', 'ExportPdf', 'ExportWord', 
-                'FormatPainter', 'ImportWord', 'MultiLevelList', 'PasteFromOfficeEnhanced', 
-                'PasteFromOffice', 'RealTimeCollaborativeComments', 'RealTimeCollaborativeTrackChanges', 
-                'RealTimeCollaborativeRevisionHistory', 'PresenceList', 'Comments', 'TrackChanges', 
-                'TrackChangesData', 'RevisionHistory', 'SlashCommand', 'Template', 'TextPartLanguage', 'Toc'
+function initEditor(id) {
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    CKEDITOR.ClassicEditor.create(element, {
+        toolbar: {
+            items: [
+                'heading', '|', 'bold', 'italic', 'underline', 'subscript', 'superscript', '|',
+                'bulletedList', 'numberedList', 'blockQuote', 'insertTable', '|',
+                'insertImage', '|',
+                'undo', 'redo', 'sourceEditing'
+            ],
+            shouldNotGroupWhenFull: true
+        },
+
+        htmlSupport: {
+            allow: [
+                {
+                    name: /^(p|b|i|strong|em|ul|ol|li|br|sub|sup|table|tr|td|th|img)$/,
+                    attributes: ['src', 'alt'],
+                    classes: false,
+                    styles: false
+                }
             ]
-        }).catch(error => {
-            console.error("Gagal init editor " + id, error);
-        });
-    }
+        },
 
-    document.addEventListener("DOMContentLoaded", function() {
-        initEditor('editor-pertanyaan');
-        initEditor('editor-a');
-        initEditor('editor-b');
-        initEditor('editor-c');
-        initEditor('editor-d');
+        simpleUpload: {
+            uploadUrl: "{{ route('soal.upload') }}",
+            headers: { 'X-CSRF-TOKEN': getCsrfToken() }
+        },
+
+        image: {
+            resizeUnit: "%",
+            resizeOptions: [
+                { name: 'resizeImage:original', value: null, label: 'Original' },
+                { name: 'resizeImage:50', value: '50', label: '50%' },
+                { name: 'resizeImage:75', value: '75', label: '75%' }
+            ],
+            toolbar: [ 'imageResize', '|', 'toggleImageCaption', 'imageTextAlternative' ]
+        },
+
+        removePlugins: [
+            'DocumentOutline','TableOfContents','Pagination','WProofreader','MathType',
+            'AIAssistant','CKBox','CKFinder','EasyImage','ExportPdf','ExportWord',
+            'FormatPainter','ImportWord','MultiLevelList',
+            'RealTimeCollaborativeComments','RealTimeCollaborativeTrackChanges',
+            'RealTimeCollaborativeRevisionHistory','PresenceList','Comments','TrackChanges',
+            'TrackChangesData','RevisionHistory','SlashCommand','Template','TextPartLanguage','Toc'
+        ]
+
+    })
+    .then(editor => {
+        editors[id] = editor;
+    })
+    .catch(error => {
+        console.error("Gagal init editor " + id, error);
     });
+}
+
+
+// 🔥 INIT SEMUA EDITOR
+document.addEventListener("DOMContentLoaded", function() {
+    initEditor('editor-pertanyaan');
+    initEditor('editor-a');
+    initEditor('editor-b');
+    initEditor('editor-c');
+    initEditor('editor-d');
+});
+
+
+// 🔥 SANITIZE WORD
+function sanitizeWordHtml(html) {
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+
+    temp.querySelectorAll('*').forEach(el => {
+        el.removeAttribute('style');
+        el.removeAttribute('class');
+        el.removeAttribute('lang');
+        el.removeAttribute('align');
+
+        if (el.tagName.toLowerCase() === 'o:p') {
+            el.remove();
+        }
+    });
+
+    return temp.innerHTML;
+}
+
+
+// 🔥 PALING PENTING: BERSIHKAN SAAT SUBMIT
+document.querySelector('form').addEventListener('submit', function (e) {
+
+    Object.keys(editors).forEach(id => {
+        let data = editors[id].getData();
+
+        // ❗ HAPUS BASE64 IMAGE (INI PENYEBAB ERROR KAMU)
+        data = data.replace(/<img[^>]+src="data:image[^"]+"[^>]*>/g, '');
+
+        // bersihkan HTML Word
+        data = sanitizeWordHtml(data);
+
+        // set kembali ke editor
+        editors[id].setData(data);
+    });
+
+});
 </script>
 
 @endsection

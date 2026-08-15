@@ -10,6 +10,7 @@
 
     /* CKEditor Custom Height */
     .ck-editor__editable_inline { min-height: 150px; }
+    
 </style>
 
 <div class="min-h-screen bg-gray-50 p-4 md:p-8">
@@ -123,6 +124,7 @@
 </div>
 
 <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/super-build/ckeditor.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <script>
     function getCsrfToken() {
@@ -148,13 +150,23 @@
 
             // --- HTML SUPPORT ---
             htmlSupport: {
-                allow: [{ name: /.*/, attributes: true, classes: true, styles: true }]
+                allow: [{  name: /^(p|span|strong|em|ul|ol|li|table|tr|td|th|img|sub|sup|br)$/,
+                attributes: true,
+                classes: true,
+                styles: false }]
             },
 
             // --- UPLOAD CONFIG ---
             simpleUpload: {
                 uploadUrl: "{{ route('mapel.upload') }}",
                 headers: { 'X-CSRF-TOKEN': getCsrfToken() }
+            },
+
+            // --- AKTIFKAN pembersih Word
+            pasteFromOffice: {
+                removeFontStyles: true,
+                removeStyles: true,
+                normalizeLists: true
             },
 
             // --- RESIZE CONFIG ---
@@ -167,13 +179,17 @@
                 ],
                 toolbar: [ 'imageResize', '|', 'toggleImageCaption', 'imageTextAlternative' ]
             },
+            simpleUpload: {
+                uploadUrl: "{{ route('mapel.upload') }}",
+                headers: { 'X-CSRF-TOKEN': getCsrfToken() }
+            },
 
             // --- REMOVE PLUGINS (CRITICAL FOR FREE MODE) ---
             removePlugins: [
                 'DocumentOutline', 'TableOfContents', 'Pagination', 'WProofreader', 'MathType',
                 'AIAssistant', 'CKBox', 'CKFinder', 'EasyImage', 'ExportPdf', 'ExportWord', 
                 'FormatPainter', 'ImportWord', 'MultiLevelList', 'PasteFromOfficeEnhanced', 
-                'PasteFromOffice', 'RealTimeCollaborativeComments', 'RealTimeCollaborativeTrackChanges', 
+                'RealTimeCollaborativeComments', 'RealTimeCollaborativeTrackChanges', 
                 'RealTimeCollaborativeRevisionHistory', 'PresenceList', 'Comments', 'TrackChanges', 
                 'TrackChangesData', 'RevisionHistory', 'SlashCommand', 'Template', 'TextPartLanguage', 'Toc'
             ]

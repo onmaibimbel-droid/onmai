@@ -129,10 +129,7 @@
 
                 <div class="mt-6 text-center text-sm text-gray-600 space-y-4">
                     <div>
-                        Belum punya akun? 
-                        <a href="{{ route('daftar') }}" class="font-bold text-[#ffc800] hover:text-yellow-600 transition underline decoration-transparent hover:decoration-current">
-                            Daftar Sekarang
-                        </a>
+                        
                     </div>
                     
                     <div class="pt-4 border-t border-gray-100">

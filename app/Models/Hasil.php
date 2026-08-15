@@ -8,7 +8,7 @@ class Hasil extends Model
 {
     protected $table = 'hasils';
 
-    protected $fillable = ['user_id', 'ujian_id', 'skor','selesai', 'peringatan'];
+    protected $fillable = ['user_id', 'ujian_id', 'judulutbk_id', 'skor','selesai', 'peringatan'];
 
     public function user()
     {
@@ -18,6 +18,11 @@ class Hasil extends Model
     public function ujian()
     {
         return $this->belongsTo(Ujian::class);
+    }
+
+    public function utbk()
+    {
+        return $this->belongsTo(Judulutbk::class);
     }
 
   

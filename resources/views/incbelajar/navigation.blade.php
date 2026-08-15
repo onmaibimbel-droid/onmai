@@ -45,6 +45,11 @@
             <i class="fas fa-chalkboard-teacher text-lg {{ request()->routeIs('ujian.*') ? 'text-gray-900' : 'group-hover:text-[#ffc800]' }}"></i>
             <span>Manajemen Ujian</span>
         </a>
+        <a href="{{ route('utbk.soal') }}" 
+            class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->routeIs('utbk.*') ? 'bg-[#ffc800] text-gray-900 shadow-[0_0_15px_rgba(255,200,0,0.4)] font-bold' : 'text-gray-400 hover:bg-gray-800 hover:text-[#ffc800]' }}">
+                <i class="fas fa-chalkboard-teacher text-lg {{ request()->routeIs('utbk.*') ? 'text-gray-900' : 'group-hover:text-[#ffc800]' }}"></i>
+                <span>Manajemen UTBK</span>
+            </a>
 
         <a href="{{ route('akun-guru') }}" 
            class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group {{ request()->routeIs('akun-guru') ? 'bg-[#ffc800] text-gray-900 shadow-[0_0_15px_rgba(255,200,0,0.4)] font-bold' : 'text-gray-400 hover:bg-gray-800 hover:text-[#ffc800]' }}">

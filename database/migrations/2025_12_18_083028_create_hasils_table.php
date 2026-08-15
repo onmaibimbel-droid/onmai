@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('ujian_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('judulutbk_id')->constrained()->cascadeOnDelete();
             $table->integer('skor');
-            $table->boolean('selesai')->default(false)->after('skor');
+            $table->boolean('selesai')->default(0);
             $table->timestamps();
         });
     }

@@ -37,7 +37,7 @@
                 <h1 class="text-2xl font-bold font-heading text-gray-800">{{ $mandiri->nama_mapel ?? 'Latihan Soal' }}</h1>
             </div>
             
-            <a href="{{ route('index.soal')}}" class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-bold hover:bg-gray-200 transition flex items-center gap-2">
+            <a href="{{ route('index.soal', ['semester' => $mandiri->semester, 'kelas' => $mandiri->kelas, 'pelajaran' => $mandiri->pelajaran]) }}" class="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-bold hover:bg-gray-200 transition flex items-center gap-2">
                 <i class="fas fa-arrow-left"></i> Kembali
             </a>
         </div>

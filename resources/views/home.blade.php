@@ -115,9 +115,9 @@
                     <a class="hover:text-[#ffc800] transition duration-300 relative group" href="{{ route('program') }}">
                         Program <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ffc800] transition-all group-hover:w-full"></span>
                     </a>
-                    <!--a class="hover:text-[#ffc800] transition duration-300 relative group" href="">
+                    <a class="hover:text-[#ffc800] transition duration-300 relative group" href="{{ route('about.about') }}">
                         Tentang <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ffc800] transition-all group-hover:w-full"></span>
-                    </a-->
+                    </a>
                     
                     <div class="relative group h-full flex items-center">
                         <button class="flex items-center hover:text-[#ffc800] transition focus:outline-none py-6">
@@ -125,7 +125,8 @@
                         </button>
                         <div class="dropdown-menu absolute right-0 top-16 w-56 bg-white rounded-lg shadow-2xl py-2 border-t-4 border-brand text-gray-800 z-50">
                             <a href="#team" class="block px-4 py-3 hover:bg-gray-50 hover:text-brand transition border-b border-gray-100">Testimoni</a>
-                            <a href="#contact" class="block px-4 py-3 hover:bg-gray-50 hover:text-brand transition">Kontak</a>
+                            <a href="https://wa.me/6283142064406" class="block px-4 py-3 hover:bg-gray-50 hover:text-brand transition">Kontak</a>
+                            <a href="https://forms.gle/QKz23j2vDqR7748w6" class="block px-4 py-3 hover:bg-gray-50 hover:text-brand transition border-t border-gray-100">Formulir Pendaftaran</a>
                         </div>
                     </div>
     
@@ -153,8 +154,17 @@
                  <li><a href="{{ route('home') }}" class="block hover:text-brand">Beranda</a></li>
                 <li><a href="{{ route('detail.fasilitas') }}" class="block hover:text-brand">Fasilitas</a></li>
                 <li><a href="{{ route('program') }}" class="block hover:text-brand">Program</a></li>
-                <!--li><a href="" class="block hover:text-brand">Tentang</a></li-->
+                <li><a href="{{ route('about.about') }}" class="block hover:text-brand">Tentang</a></li>
                 <li><a href="https://wa.me/6283142064406" target="_blank" class="block hover:text-brand">Kontak</a></li>
+                 @auth
+                        <a href="{{ route('dashboard') }}" class="px-6 py-2.5 bg-[#ffc800] text-gray-900 font-bold rounded-full hover:bg-white hover:text-[#ffc800] transition shadow-lg transform hover:-translate-y-1 hover:shadow-brand/50">
+                            Dashboard
+                        </a>
+                @else
+                        <a href="{{ route('login') }}" class="px-6 py-2.5 bg-[#ffc800] text-gray-900 font-bold rounded-full hover:bg-white hover:text-[#ffc800] transition shadow-lg transform hover:-translate-y-1 hover:shadow-brand/50">
+                            Login
+                        </a>
+                @endauth
             </ul>
         </div>
     </nav>
@@ -183,9 +193,9 @@
                         <a href="{{ route('program')}}" class="px-8 py-4 bg-[#ffc800] text-black font-bold rounded-lg shadow-[0_0_20px_rgba(255,200,0,0.4)] hover:shadow-[0_0_30px_rgba(255,200,0,0.6)] hover:bg-white transition duration-300 transform hover:-translate-y-1">
                             Program Belajar
                         </a>
-                        <!--a href="" class="px-8 py-4 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-black transition duration-300 transform hover:-translate-y-1">
+                        <a href="{{ route('about.about') }}" class="px-8 py-4 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-black transition duration-300 transform hover:-translate-y-1">
                             Tentang Kami
-                        </a-->
+                        </a>
                     </div>
                 </div>
                 <div class="w-full lg:w-1/2" data-aos="fade-left" data-aos-duration="1200">
@@ -583,10 +593,10 @@
                 <div>
                     <h4 class="font-bold text-gray-900 mb-6 text-lg">Jelajahi</h4>
                     <ul class="space-y-4 text-base">
-                        <li><a href="" class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">Tentang Kami</a></li>
+                        <li><a href="{{ route('about.about') }}" class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">Tentang Kami</a></li>
                         <li><a href="{{ route('detail.fasilitas') }}" class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">Fasilitas</a></li>
                         <li><a  class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">Testimoni</a></li>
-                        <li><a  class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">Karir Pengajar</a></li>
+                        <li><a href="https://forms.gle/QKz23j2vDqR7748w6" class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition" target="_blank">Formulir Pendaftaran</a></li>
                     </ul>
                 </div>
 

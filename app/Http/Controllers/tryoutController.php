@@ -46,7 +46,7 @@ class TryoutController extends Controller
         $soal_list = $ujian->soals()->get();
 
         if ($soal_list->isEmpty()) {
-            return redirect()->route('tryout.tryout')
+            return redirect()->route('tryout.index')
                 ->with('error', 'Soal untuk ujian ini belum tersedia.');
         }
 

@@ -62,7 +62,7 @@
                                 <div class="w-10 h-1 bg-gray-100 my-4 group-hover:bg-[#ffc800]/50 transition-colors"></div>
 
                                 <div class="mt-auto w-full">
-                                    <a href="{{ route('index.soal')}}" class="group/btn relative w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#ffc800] text-white font-bold rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-95">
+                                    <a href="{{ Route('akademik.semester')}}" class="group/btn relative w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#ffc800] text-white font-bold rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-95">
                                         <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-[150%] skew-x-12 transition-transform duration-1000 group-hover/btn:translate-x-[150%] ease-in-out"></div>
                                         <span class="relative z-10">Lihat</span>
                                         <i class="fas fa-arrow-right relative z-10 transition-transform duration-300 group-hover/btn:translate-x-1"></i>

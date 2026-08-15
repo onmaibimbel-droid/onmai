@@ -9,15 +9,15 @@
             <a class="hover:text-[#ffc800] transition duration-300 relative group" href="{{ route('home') }}">
                 Beranda <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ffc800] transition-all group-hover:w-full"></span>
             </a>
-            <!--a class="hover:text-[#ffc800] transition duration-300 relative group" href="#services">
+            <a class="hover:text-[#ffc800] transition duration-300 relative group" href="{{ route('detail.fasilitas') }}">
                 Fasilitas <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ffc800] transition-all group-hover:w-full"></span>
-            </a-->
+            </a>
             <a class="hover:text-[#ffc800] transition duration-300 relative group" href="{{ route('program') }}">
                 Program <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ffc800] transition-all group-hover:w-full"></span>
             </a>
-            <!--a class="hover:text-[#ffc800] transition duration-300 relative group" href="">
+            <a class="hover:text-[#ffc800] transition duration-300 relative group" href="{{ route('about.about') }}">
                 Tentang <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ffc800] transition-all group-hover:w-full"></span>
-            </a-->
+            </a>
             
             <div class="relative group h-full flex items-center">
                 <button class="flex items-center hover:text-[#ffc800] transition focus:outline-none py-6">
@@ -51,9 +51,9 @@
 <div id="mobile-menu" class="lg:hidden bg-gray-900 border-t border-gray-800">
     <ul class="px-6 py-6 space-y-4 font-bold text-white uppercase text-sm font-heading">
         <li><a href="{{ route('home') }}" class="block hover:text-brand">Beranda</a></li>
-        <li><a href="{{ route('detail.fasilitas') }}" class="block hover:text-brand" href="#services">Fasilitas</a></li>
-        <li><a href="{{ route('program') }}" class="block hover:text-brand" href="#portfolio">Program</a></li>
-        <!--li><a href="" class="block hover:text-brand" href="#about">Tentang</a></li-->
+        <li><a href="{{ route('detail.fasilitas') }}" class="block hover:text-brand">Fasilitas</a></li>
+        <li><a href="{{ route('program') }}" class="block hover:text-brand">Program</a></li>
+        <li><a href="{{ route('about.about') }}" class="block hover:text-brand">Tentang</a></li>
         <li><a href="https://wa.me/6283142064406" target="_blank" class="block hover:text-brand">Kontak</a></li>
     </ul>
 </div>

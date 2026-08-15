@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hasil;
+use App\Models\Judulutbk;
 use App\Models\Ujian;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -30,7 +31,22 @@ class HasilController extends Controller
     return view('tryout.hasil', compact('hasil', 'ujian'));
     }
 
-  
+    public function nilai(Judulutbk $judulutbk)
+    {
+        $nilai = Hasil::where('user_id', Auth::id())
+            ->where('judulutbk_id', $judulutbk->id)
+            ->first();
+
+        if (!$nilai) {
+            return redirect()->route('to-utbk.to_utbk')
+                ->with('error', 'Hasil ujian belum tersedia.');
+        }
+
+        return view('to-utbk.hasil', [
+            'judulutbk' => $judulutbk,
+            'nilai' => $nilai
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.

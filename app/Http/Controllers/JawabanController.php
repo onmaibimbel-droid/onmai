@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jawaban;
 use App\Models\Hasil;
+use App\Models\Judulutbk;
 use App\Models\Ujian;
 use App\Models\Soal;
 use Illuminate\Http\Request;
@@ -81,14 +82,16 @@ class JawabanController extends Controller
      */
     public function destroy(Jawaban $jawaban)
     {
-        //
+        
     }
 
-   public function jawab(Request $request)
-{
+
+    public function jawab(Request $request)
+    {
     $request->validate([
         'soal_id'  => 'required|exists:soals,id',
         'ujian_id' => 'required|exists:ujians,id',
+        
         'jawaban'  => 'required|in:A,B,C,D',
         'index'    => 'required|integer',
     ]);
@@ -179,5 +182,7 @@ public function selesai(Ujian $ujian)
     // 🔥 INI KUNCINYA
     return redirect()->route('tryout.hasil', $ujian->id);
 }
+
+
 
 }

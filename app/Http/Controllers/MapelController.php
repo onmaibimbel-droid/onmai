@@ -86,6 +86,12 @@ class MapelController extends Controller
                 // Bersihkan soal tapi biarkan gambar
                 $pertanyaan = strip_tags($data['soal'] ?? '', $allowed_tags);
                 $pertanyaan = preg_replace('/text-align\s*:\s*center;?/i', '', $pertanyaan);
+                $pertanyaan = strip_tags($data['soal'] ?? '', $allowed_tags);
+
+                // Skip jika soal kosong / cuma spasi
+                if (empty(trim($pertanyaan))) {
+                    continue;
+                }
                 
                 // Jika tidak ada div, bungkus biar rapi (opsional)
                 if (!str_contains($pertanyaan, '<div')) {

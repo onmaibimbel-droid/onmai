@@ -79,16 +79,28 @@ class MandiriController extends Controller
     {
        $request->validate([
             'nama_mapel' => 'required|string|max:100',
+            'semester'   => 'required|in:1,2',
+            'kelas'      => 'required|string|max:50',
+            'pelajaran'  => 'required|string|max:100',
         ]);
 
         Mandiri::create([
             'nama_mapel' => $request->nama_mapel,
+            'semester'   => $request->semester,
+            'kelas'      => $request->kelas,
+            'pelajaran'  => $request->pelajaran,
         ]);
 
         return redirect()->back()
             ->with('success', 'Mata Pelajaran berhasil ditambahkan');
     }
 
+    public function semester($semester)
+{
+    $mandiris = Mandiri::where('semester', $semester)->get();
+
+    return view('mandiri.materi', compact('mandiris', 'semester'));
+}
     /**
      * Menampilkan Detail Mapel & Daftar Soal (FIX ARGUMENT ERROR)
      */
@@ -105,16 +117,33 @@ class MandiriController extends Controller
      */
     public function edit(Mandiri $mandiri)
     {
-        //
+        
+        return view('mandiri.materi-edit', compact('mandiri'));
     }
 
     /**
      * Update Data
      */
+   
     public function update(Request $request, Mandiri $mandiri)
-    {
-        //
-    }
+{
+    $request->validate([
+        'nama_mapel' => 'required|string|max:255',
+        'semester'   => 'required|integer|min:1|max:2',
+        'kelas'      => 'required|string|max:50',
+        'pelajaran'  => 'required|string|max:100',
+    ]);
+
+    $mandiri->update([
+        'nama_mapel' => $request->nama_mapel,
+        'semester'   => $request->semester,
+        'kelas'      => $request->kelas,
+        'pelajaran'  => $request->pelajaran,
+    ]);
+
+    return redirect()->route('mandiri.materi')
+        ->with('success', 'Nama mapel berhasil diupdate');
+}
 
     /**
      * Hapus Mapel beserta Soalnya

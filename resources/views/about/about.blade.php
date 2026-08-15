@@ -19,7 +19,7 @@
                 <h3 class="text-base md:text-lg text-gray-500 font-serif italic mb-2">TENTANG ONMAI</h3>
                 
                 <h2 class="text-2xl md:text-4xl font-extrabold uppercase text-gray-800 font-heading leading-tight py-4 md:py-8">
-                    Bimbel ONMAI merupakan lembaga pendidikan yang telah berdiri sejak tahun 2013.
+                    Bimbel ONMAI merupakan lembaga pendidikan dalam bentuk bimbingan belajar bersama dan privat
                 </h2>
             </div>
         </div>
@@ -31,27 +31,27 @@
                 
                 <div class="w-full lg:w-5/12">
                     <h2 class="text-2xl md:text-4xl font-extrabold text-gray-900 font-heading leading-tight text-center lg:text-left">
-                        Pusat Bimbingan Belajar dan Privat BENGKULU Hadir Sejak 2013.
+                        Pusat Bimbingan Belajar dan Privat BENGKULU
                     </h2>
                 </div>
 
                 <div class="w-full lg:w-6/12">
                    <p class="text-gray-500 text-base md:text-lg text-justify lg:text-left leading-relaxed">
                         Bimbel ONMAI merupakan lembaga pendidikan dalam bentuk bimbingan belajar yang telah
-                        hadir selama bertahun-tahun dan telah mendidik ratusan hingga ribuan siswa 
+                        hadir di Bengkulu dan telah mendidik ratusan hingga ribuan siswa 
                         sebagai sarana dan fasilitas dalam menunjang akademik mereka. Dengan fokus 
                         pada pengembangan potensi siswa secara mendalam, kami berkomitmen untuk memberikan 
                         fasilitas dan pelayanan akademik yang terbaik melalui penerapan metode pendekatan 
                         pengajaran yang sesuai dengan kebutuhan siswa dan bersesuaian dengan kurikulum sekolah 
                         untuk mendukung mereka dalam mencapai prestasi tertinggi.
                     </p>
-                        <p class="text-gray-500 text-base md:text-lg text-justify lg:text-left leading-relaxed">
+                        <!--p class="text-gray-500 text-base md:text-lg text-justify lg:text-left leading-relaxed">
                         Rekam jejak prestasi dedikasi kami dibuktikan melalui pencapaian 
                         siswa-siswi bimbingan kami yang secara konsisten menempati posisi unggul di 
-                        tingkat provinsi: <a href="{{ route('about.baca') }}" id="toggleReadMore"
+                        tingkat provinsi: <a href="" id="toggleReadMore"
                         class="inline-block mt-2 text-blue-600 hover:text-blue-800 font-medium">
                         Baca selanjutnya
-                        </a>
+                        </a-->
                     </p>
                 </div>
 

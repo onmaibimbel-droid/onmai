@@ -11,10 +11,13 @@ class HomeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($semester, $kelas, $pelajaran)
     {
-        $mandiri = Mandiri::all();
-        return view('index.soal', compact('mandiri'));
+        $mandiri = Mandiri::where('semester', $semester)
+                      ->where('kelas', $kelas)
+                      ->where('pelajaran', $pelajaran)
+                      ->get();
+        return view('index.soal', compact('mandiri', 'semester', 'kelas', 'pelajaran'));
     }
 
 

@@ -15,9 +15,25 @@
     .hamburger-lines span:first-child { transform-origin: 0% 0%; }
     .hamburger-lines span:nth-last-child(2) { transform-origin: 0% 100%; }
 
+    /* NORMALKAN ukuran font dari CKEditor */
+    .soal-content,
+    .jawaban-content,
+    .pembahasan-content {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    /* Paksa semua elemen dalam CKEditor agar tidak jumbo */
+    .soal-content *,
+    .jawaban-content *,
+    .pembahasan-content * {
+        font-size: 16px !important;
+    }
     /* CSS Khusus agar Soal & Gambar Rumus Rapi */
     .soal-content img, .jawaban-content img {
         display: inline-block !important;
+        font-size: 16px;
+        line-height: 1.6;
         vertical-align: middle;
         max-width: 100%;
         height: auto;
@@ -27,6 +43,7 @@
     .jawaban-content p {
         margin-top: 0;
         margin-bottom: 0;
+        font-size: 16px !important;
     }
 </style>
 
@@ -96,7 +113,6 @@
                             Soal No. {{ $index + 1 }}
                         </span>
                     </div>
-                    
                     <div class="flex items-center gap-2 opacity-100 md:opacity-50 group-hover:opacity-100 transition-opacity duration-200">
                         <a href="{{ route('mapel.edit', [$mandiri->id, $mapel->id]) }}" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-blue-600 text-xs font-bold hover:bg-blue-50 hover:border-blue-200 transition shadow-sm">
                             <i class="fas fa-edit mr-1"></i> Edit

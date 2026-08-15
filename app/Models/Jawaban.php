@@ -12,9 +12,9 @@ class Jawaban extends Model
         'soal_id',
         'jawaban'];
 
-public function soals()
-{
-    return $this->belongsTo(Soal::class);
-}
+    public function soals()
+    {
+        return $this->belongsTo(Soal::class);
+    }
 
 }
