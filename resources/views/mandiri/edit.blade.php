@@ -49,7 +49,7 @@
             </a>
         </div>
 
-        <form action="{{ route('mapel.update', [$mandiri->id, $mapel->id]) }}" method="POST">
+        <form action="{{ route('mapel.update', [$mandiri->id, $mapel->id]) }}" method="POST" data-encode-html>
             @csrf
             @method('PUT')
         
@@ -240,5 +240,7 @@
         initEditor('editor-pembahasan');
     });
 </script>
+
+@include('partials.encode-html-form')
 
 @endsection

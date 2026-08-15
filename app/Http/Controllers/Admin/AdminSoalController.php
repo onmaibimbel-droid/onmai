@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Ujian;
 use App\Models\Soal;
+use App\Models\Ujian;
+use App\Services\SanitizedHtml;
 use Illuminate\Http\Request;
 
 class AdminSoalController extends Controller
@@ -15,32 +16,34 @@ class AdminSoalController extends Controller
     public function create($ujian_id)
     {
         $ujian = Ujian::findOrFail($ujian_id);
+
         return view('admin.soal.create', compact('ujian'));
     }
 
     /**
      * Simpan Soal Baru
      */
-    public function store(Request $request, $ujian_id)
+    public function store(Request $request, $ujian_id, SanitizedHtml $html)
     {
         $ujian = Ujian::findOrFail($ujian_id);
+        $html->prepare($request, ['pertanyaan', 'opsi_a', 'opsi_b', 'opsi_c', 'opsi_d']);
 
         $request->validate([
-            'pertanyaan'    => 'required',
-            'opsi_a'        => 'required',
-            'opsi_b'        => 'required',
-            'opsi_c'        => 'required',
-            'opsi_d'        => 'required',
+            'pertanyaan' => 'required',
+            'opsi_a' => 'required',
+            'opsi_b' => 'required',
+            'opsi_c' => 'required',
+            'opsi_d' => 'required',
             'jawaban_benar' => 'required|in:A,B,C,D', // Sesuai field database
         ]);
 
         // Simpan ke database menggunakan relasi
         $ujian->soals()->create([
-            'pertanyaan'    => $request->pertanyaan,
-            'opsi_a'        => $request->opsi_a,
-            'opsi_b'        => $request->opsi_b,
-            'opsi_c'        => $request->opsi_c,
-            'opsi_d'        => $request->opsi_d,
+            'pertanyaan' => $request->pertanyaan,
+            'opsi_a' => $request->opsi_a,
+            'opsi_b' => $request->opsi_b,
+            'opsi_c' => $request->opsi_c,
+            'opsi_d' => $request->opsi_d,
             'jawaban_benar' => $request->jawaban_benar,
         ]);
 
@@ -56,33 +59,34 @@ class AdminSoalController extends Controller
     {
         $soal = Soal::with('ujian')->findOrFail($id);
         // Kita butuh data ujian juga untuk tombol 'Kembali'
-        $ujian = $soal->ujian; 
-        
+        $ujian = $soal->ujian;
+
         return view('admin.soal.edit', compact('soal', 'ujian'));
     }
 
     /**
      * Update Soal
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, SanitizedHtml $html)
     {
         $soal = Soal::findOrFail($id);
+        $html->prepare($request, ['pertanyaan', 'opsi_a', 'opsi_b', 'opsi_c', 'opsi_d']);
 
         $request->validate([
-            'pertanyaan'    => 'required',
-            'opsi_a'        => 'required',
-            'opsi_b'        => 'required',
-            'opsi_c'        => 'required',
-            'opsi_d'        => 'required',
+            'pertanyaan' => 'required',
+            'opsi_a' => 'required',
+            'opsi_b' => 'required',
+            'opsi_c' => 'required',
+            'opsi_d' => 'required',
             'jawaban_benar' => 'required|in:A,B,C,D',
         ]);
 
         $soal->update([
-            'pertanyaan'    => $request->pertanyaan,
-            'opsi_a'        => $request->opsi_a,
-            'opsi_b'        => $request->opsi_b,
-            'opsi_c'        => $request->opsi_c,
-            'opsi_d'        => $request->opsi_d,
+            'pertanyaan' => $request->pertanyaan,
+            'opsi_a' => $request->opsi_a,
+            'opsi_b' => $request->opsi_b,
+            'opsi_c' => $request->opsi_c,
+            'opsi_d' => $request->opsi_d,
             'jawaban_benar' => $request->jawaban_benar,
         ]);
 
@@ -97,7 +101,7 @@ class AdminSoalController extends Controller
     {
         $soal = Soal::findOrFail($id);
         $ujian_id = $soal->ujian_id; // Simpan ID ujian sebelum dihapus untuk redirect
-        
+
         $soal->delete();
 
         return redirect()->route('admin.ujian.show', $ujian_id)
@@ -113,14 +117,15 @@ class AdminSoalController extends Controller
         if ($request->hasFile('upload')) {
             $file = $request->file('upload');
             $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $filename = $filename . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $filename = $filename.'_'.time().'.'.$file->getClientOriginalExtension();
 
             $path = $file->storeAs('soal_images', $filename, 'public');
 
             return response()->json([
-                'url' => asset('storage/' . $path)
+                'url' => asset('storage/'.$path),
             ]);
         }
+
         return response()->json(['error' => ['message' => 'Upload gagal']], 400);
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Utbk;
 use App\Models\Judulutbk;
+use App\Models\Utbk;
+use App\Services\SanitizedHtml;
 use Illuminate\Http\Request;
 
 class UtbkController extends Controller
@@ -15,6 +16,7 @@ class UtbkController extends Controller
     {
         $judulutbk = Judulutbk::with('utbks')->get();
         $utbks = $judulutbk->utbks; // relasi
+
         return view('utbk.index', compact('judulutbk', 'utbks'));
     }
 
@@ -23,15 +25,17 @@ class UtbkController extends Controller
      */
     public function create(Judulutbk $judulutbk)
     {
-        
+
         return view('utbk.create', compact('judulutbk'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Judulutbk $judulutbk)
+    public function store(Request $request, Judulutbk $judulutbk, SanitizedHtml $html)
     {
+        $html->prepare($request, ['pertanyaan', 'opsi_a', 'opsi_b', 'opsi_c', 'opsi_d', 'opsi_e']);
+
         $data = $request->validate([
             'pertanyaan' => 'required',
             'opsi_a' => 'required',
@@ -47,7 +51,7 @@ class UtbkController extends Controller
         return redirect()
             ->route('utbk.show', $judulutbk->id)
             ->with('success', 'Soal berhasil ditambahkan');
-    
+
     }
 
     /**
@@ -57,17 +61,19 @@ class UtbkController extends Controller
     {
         //
     }
+
     public function soal(Judulutbk $judulutbk)
     {
         $juduls = Judulutbk::with('utbks')->get();
 
         return view('utbk.soal', compact('juduls', 'judulutbk'));
-        
+
     }
+
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit( Judulutbk $judulutbk, Utbk $utbk)
+    public function edit(Judulutbk $judulutbk, Utbk $utbk)
     {
         return view('utbk.edit', compact('utbk', 'judulutbk'));
     }
@@ -75,8 +81,10 @@ class UtbkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Judulutbk $judulutbk, Utbk $utbk)
+    public function update(Request $request, Judulutbk $judulutbk, Utbk $utbk, SanitizedHtml $html)
     {
+        $html->prepare($request, ['pertanyaan', 'opsi_a', 'opsi_b', 'opsi_c', 'opsi_d', 'opsi_e']);
+
         $data = $request->validate([
             'pertanyaan' => 'required',
             'opsi_a' => 'required',
@@ -102,7 +110,7 @@ class UtbkController extends Controller
         $utbk->delete();
 
         return redirect()
-        ->route('utbk.show', $judulutbk->id)
-        ->with('success', 'Soal berhasil dihapus');
+            ->route('utbk.show', $judulutbk->id)
+            ->with('success', 'Soal berhasil dihapus');
     }
 }

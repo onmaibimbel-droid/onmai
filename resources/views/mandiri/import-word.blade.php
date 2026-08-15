@@ -115,18 +115,23 @@
 
                         <div class="grid md:grid-cols-2 gap-2">
                             @foreach(['a', 'b', 'c', 'd'] as $huruf)
-                                <label class="flex items-start gap-3 p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50 has-[:checked]:border-green-400 has-[:checked]:bg-green-50">
+                                <div class="flex items-start gap-3 p-3 rounded-xl border border-gray-200 hover:bg-gray-50">
                                     <input type="radio" name="kunci[{{ $i }}]" value="{{ $huruf }}"
                                            class="mt-1 w-4 h-4 border-gray-300 text-green-600 focus:ring-green-500">
                                     <span class="font-bold text-gray-500 text-sm">{{ strtoupper($huruf) }}.</span>
-                                    <span class="soal-preview text-sm text-gray-800 flex-1">
+                                    <div class="soal-preview text-sm text-gray-800 flex-1">
                                         @if(trim($soal[$huruf]) === '')
-                                            <span class="text-red-400 italic">kosong, perlu diisi manual setelah import</span>
+                                            <label for="isi-{{ $i }}-{{ $huruf }}" class="block text-red-500 font-semibold mb-2">
+                                                Pilihan ini belum terbaca. Lengkapi sebelum mengimpor.
+                                            </label>
+                                            <textarea id="isi-{{ $i }}-{{ $huruf }}" name="isi[{{ $i }}][{{ $huruf }}]"
+                                                      rows="3" class="w-full rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-gray-800 focus:border-amber-500 focus:ring-amber-500"
+                                                      placeholder="Tulis pilihan {{ strtoupper($huruf) }}...">{{ old("isi.$i.$huruf") }}</textarea>
                                         @else
                                             {!! $soal[$huruf] !!}
                                         @endif
-                                    </span>
-                                </label>
+                                    </div>
+                                </div>
                             @endforeach
                         </div>
                     </div>

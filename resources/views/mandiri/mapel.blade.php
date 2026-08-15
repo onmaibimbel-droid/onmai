@@ -47,7 +47,7 @@
             </a>
         </div>
 
-        <form action="{{ route('mapel.store', $mandiri->id) }}" method="POST">
+        <form action="{{ route('mapel.store', $mandiri->id) }}" method="POST" data-encode-html>
             @csrf
 
             <div class="bg-white rounded-2xl shadow-lg border-t-4 border-[#ffc800] overflow-hidden">
@@ -220,5 +220,7 @@
 
 
 </script>
+
+@include('partials.encode-html-form')
 
 @endsection

@@ -102,7 +102,7 @@
                     </a>
                 </div>
 
-                <form action="{{ route('admin.soal.store', $ujian->id) }}" method="POST">
+                <form action="{{ route('admin.soal.store', $ujian->id) }}" method="POST" data-encode-html>
                     @csrf
         
                     <div class="bg-white rounded-2xl shadow-lg border-t-4 border-yellow-400 overflow-hidden">
@@ -282,5 +282,6 @@
             if (overlay) overlay.addEventListener('click', toggleSidebar);
         });
     </script>
+    @include('partials.encode-html-form')
 </body>
 </html>
