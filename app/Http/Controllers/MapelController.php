@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Mapel;   // PERBAIKAN: Huruf depan harus Besar
 use App\Models\Mandiri; // PERBAIKAN: Huruf depan harus Besar
+use App\Services\DocxSoalParser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class MapelController extends Controller
@@ -116,6 +119,134 @@ class MapelController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal import: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Import Word: baca file, simpan hasil bacanya, lalu tampilkan preview.
+     *
+     * Hasil parsing sengaja dititipkan ke file sementara, bukan dikirim balik
+     * lewat form. Selain payload MathML-nya besar, mengirim ulang lewat POST
+     * berisiko diblokir firewall hosting seperti yang terjadi waktu copy-paste.
+     */
+    public function importWord(Request $request, Mandiri $mandiri, DocxSoalParser $parser)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:docx|max:10240',
+        ], [
+            'file.mimes' => 'File harus berformat .docx. Kalau filenya masih .doc lama, buka di Word lalu Save As ke .docx.',
+        ]);
+
+        try {
+            $soal = $parser->parse($request->file('file')->getRealPath());
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Gagal membaca file: ' . $e->getMessage());
+        }
+
+        if (! $soal) {
+            return back()->with('error', 'Tidak ada soal yang terbaca dari file itu.');
+        }
+
+        $token = Str::uuid()->toString();
+
+        Storage::put("word-import/{$token}.json", json_encode([
+            'mandiri_id' => $mandiri->id,
+            'nama_file' => $request->file('file')->getClientOriginalName(),
+            'soal' => $soal,
+        ]));
+
+        return redirect()->route('mapel.import-word.preview', [$mandiri->id, $token]);
+    }
+
+    /**
+     * Preview hasil baca sebelum benar-benar disimpan.
+     */
+    public function importWordPreview(Mandiri $mandiri, string $token)
+    {
+        $data = $this->ambilHasilBaca($mandiri, $token);
+
+        return view('mandiri.import-word', [
+            'mandiri' => $mandiri,
+            'token' => $token,
+            'namaFile' => $data['nama_file'],
+            'daftarSoal' => $data['soal'],
+        ]);
+    }
+
+    /**
+     * Simpan soal yang dicentang guru di halaman preview.
+     */
+    public function importWordSimpan(Request $request, Mandiri $mandiri, string $token)
+    {
+        $data = $this->ambilHasilBaca($mandiri, $token);
+
+        $validated = $request->validate([
+            'pilih' => 'required|array|min:1',
+            'pilih.*' => 'integer',
+            'kunci' => 'required|array',
+        ], [
+            'pilih.required' => 'Belum ada soal yang dicentang.',
+        ]);
+
+        $jumlah = 0;
+        $dilewati = [];
+
+        foreach ($validated['pilih'] as $index) {
+            $soal = $data['soal'][$index] ?? null;
+
+            if (! $soal) {
+                continue;
+            }
+
+            $kunci = $validated['kunci'][$index] ?? null;
+
+            // Tanpa kunci jawaban soalnya tidak bisa dinilai, jadi lebih baik
+            // dilewati dan dilaporkan daripada masuk dalam keadaan cacat.
+            if (! in_array($kunci, ['a', 'b', 'c', 'd'], true)) {
+                $dilewati[] = $index + 1;
+
+                continue;
+            }
+
+            $mandiri->mapels()->create([
+                'pertanyaan' => $soal['pertanyaan'],
+                'a' => $soal['a'],
+                'b' => $soal['b'],
+                'c' => $soal['c'],
+                'd' => $soal['d'],
+                'kunci' => $kunci,
+                'pembahasan' => null,
+            ]);
+
+            $jumlah++;
+        }
+
+        Storage::delete("word-import/{$token}.json");
+
+        $pesan = "{$jumlah} soal berhasil diimport dari Word";
+
+        if ($dilewati) {
+            $pesan .= '. Soal nomor ' . implode(', ', $dilewati) . ' dilewati karena kunci jawabannya belum dipilih';
+        }
+
+        return redirect()
+            ->route('mandiri.show', $mandiri->id)
+            ->with($jumlah ? 'success' : 'error', $pesan);
+    }
+
+    /** Ambil hasil baca yang dititipkan, sekaligus pastikan tokennya milik mandiri ini. */
+    private function ambilHasilBaca(Mandiri $mandiri, string $token): array
+    {
+        abort_unless(Str::isUuid($token), 404);
+
+        $path = "word-import/{$token}.json";
+
+        abort_unless(Storage::exists($path), 404, 'Hasil import sudah kedaluwarsa. Silakan upload ulang filenya.');
+
+        $data = json_decode(Storage::get($path), true);
+
+        abort_unless(is_array($data) && ($data['mandiri_id'] ?? null) === $mandiri->id, 404);
+
+        return $data;
     }
 
     /**

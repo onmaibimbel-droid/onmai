@@ -176,10 +176,12 @@ window.MathJax = {
     inlineMath: [['$', '$'], ['\\(', '\\)']],
     displayMath: [['$$', '$$'], ['\\[', '\\]']]
   },
-  svg: { fontCache: 'global' }
+  options: { enableMenu: false }
 };
 
 
 </script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+{{-- Paket tex-mml dipakai (bukan tex-svg) supaya soal hasil import Word,
+     yang tersimpan sebagai MathML, ikut terender selain rumus TeX lama. --}}
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 @endsection

@@ -149,11 +149,23 @@
             },
 
             // --- HTML SUPPORT ---
+            // Elemen MathML ikut diizinkan supaya rumus dari soal hasil import Word
+            // tidak dibuang editor waktu soalnya dibuka untuk diedit.
             htmlSupport: {
-                allow: [{  name: /^(p|span|strong|em|ul|ol|li|table|tr|td|th|img|sub|sup|br)$/,
-                attributes: true,
-                classes: true,
-                styles: false }]
+                allow: [
+                    {
+                        name: /^(p|span|strong|em|u|ul|ol|li|table|tbody|thead|tr|td|th|img|sub|sup|br)$/,
+                        attributes: true,
+                        classes: true,
+                        styles: false
+                    },
+                    {
+                        name: /^(math|mrow|mi|mn|mo|ms|mtext|mspace|mfrac|msqrt|mroot|msup|msub|msubsup|munder|mover|munderover|mmultiscripts|mtable|mtr|mtd|mfenced|mstyle|menclose|mpadded|mphantom)$/,
+                        attributes: true,
+                        classes: true,
+                        styles: false
+                    }
+                ]
             },
 
             // --- UPLOAD CONFIG ---
@@ -162,12 +174,9 @@
                 headers: { 'X-CSRF-TOKEN': getCsrfToken() }
             },
 
-            // --- AKTIFKAN pembersih Word
-            pasteFromOffice: {
-                removeFontStyles: true,
-                removeStyles: true,
-                normalizeLists: true
-            },
+            // Catatan: blok "pasteFromOffice" yang dulu ada di sini dihapus.
+            // Opsi itu milik CKEditor 4; di CKEditor 5 plugin PasteFromOffice
+            // tidak menerima konfigurasi apa pun, jadi selama ini diabaikan diam-diam.
 
             // --- RESIZE CONFIG ---
             image: {
@@ -178,10 +187,6 @@
                     { name: 'resizeImage:75', value: '75', label: '75%' }
                 ],
                 toolbar: [ 'imageResize', '|', 'toggleImageCaption', 'imageTextAlternative' ]
-            },
-            simpleUpload: {
-                uploadUrl: "{{ route('mapel.upload') }}",
-                headers: { 'X-CSRF-TOKEN': getCsrfToken() }
             },
 
             // --- REMOVE PLUGINS (CRITICAL FOR FREE MODE) ---
