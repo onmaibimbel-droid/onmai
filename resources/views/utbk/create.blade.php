@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <form action="{{ route('utbk.store', $judulutbk->id) }}" method="POST">
+        <form action="{{ route('utbk.store', $judulutbk->id) }}" method="POST" data-encode-html>
             @csrf
 
             <div class="bg-white rounded-2xl shadow-lg border-t-4 border-[#ffc800] overflow-hidden">
@@ -185,5 +185,7 @@
         initEditor('editor-e');
     });
 </script>
+
+@include('partials.encode-html-form')
 
 @endsection

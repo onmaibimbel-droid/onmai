@@ -92,7 +92,7 @@
                     </a>
                 </div>
 
-                <form action="{{ route('admin.soal.update', $soal->id) }}" method="POST">
+                <form action="{{ route('admin.soal.update', $soal->id) }}" method="POST" data-encode-html>
                     @csrf
                     @method('PUT')
         
@@ -264,5 +264,6 @@
             if (overlay) overlay.addEventListener('click', toggleSidebar);
         });
     </script>
+    @include('partials.encode-html-form')
 </body>
 </html>

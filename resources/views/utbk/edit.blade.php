@@ -49,7 +49,7 @@
             </a>
         </div>
 
-        <form action="{{ route('utbk.update', [$judulutbk->id, $utbk->id]) }}" method="POST">
+        <form action="{{ route('utbk.update', [$judulutbk->id, $utbk->id]) }}" method="POST" data-encode-html>
             @csrf
             @method('PUT')
         
@@ -237,5 +237,7 @@
         initEditor('jawaban_benar');
     });
 </script>
+
+@include('partials.encode-html-form')
 
 @endsection

@@ -88,12 +88,29 @@
             </div>
         @endif
 
+        @if(session('error') || $errors->any())
+            <div class="flex-grow md:mx-4 w-full md:w-auto">
+                <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-3 rounded-lg text-sm shadow-sm">
+                    <i class="fas fa-circle-exclamation mr-2"></i>
+                    <span>{{ session('error') ?: $errors->first() }}</span>
+                </div>
+            </div>
+        @endif
+
         <div class="flex items-center gap-3 w-full md:w-auto">
             <form action="{{ route('mapel.import', $mandiri->id) }}" method="POST" enctype="multipart/form-data" class="inline-block">
                 @csrf
                 <input type="file" name="file" id="importExcel" accept=".csv,.xlsx,.xls" hidden onchange="this.form.submit()">
                 <label for="importExcel" class="cursor-pointer flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-xl font-bold text-sm shadow-md hover:bg-green-700 transition transform hover:-translate-y-0.5">
                     <i class="fas fa-file-excel"></i> Import Excel
+                </label>
+            </form>
+
+            <form action="{{ route('mapel.import-word', $mandiri->id) }}" method="POST" enctype="multipart/form-data" class="inline-block">
+                @csrf
+                <input type="file" name="file" id="importWord" accept=".docx" hidden onchange="this.form.submit()">
+                <label for="importWord" class="cursor-pointer flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl font-bold text-sm shadow-md hover:bg-blue-700 transition transform hover:-translate-y-0.5">
+                    <i class="fas fa-file-word"></i> Import Word
                 </label>
             </form>
 
@@ -235,5 +252,8 @@
         }
     });
 </script>
+
+
+@include('partials.mathjax')
 
 @endsection

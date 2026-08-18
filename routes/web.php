@@ -102,6 +102,11 @@ Route::middleware(['auth', 'role:guru'])->group(function () {
     Route::post('/mapel/upload-image', [MapelController::class, 'upload'])->name('mapel.upload');
     Route::post('/mandiri/{mandiri}/mapel/import', [MapelController::class, 'importExcel'])->name('mapel.import');
 
+    // Import bank soal dari file Word (.docx)
+    Route::post('/mandiri/{mandiri}/mapel/import-word', [MapelController::class, 'importWord'])->name('mapel.import-word');
+    Route::get('/mandiri/{mandiri}/mapel/import-word/{token}', [MapelController::class, 'importWordPreview'])->name('mapel.import-word.preview');
+    Route::post('/mandiri/{mandiri}/mapel/import-word/{token}', [MapelController::class, 'importWordSimpan'])->name('mapel.import-word.simpan');
+
     // 2. MANAJEMEN UJIAN (TRYOUT / EXAM) Jangan di ubah
     Route::resource('ujian', UjianController::class);
     Route::post('/ujian/{ujian}/toggle', [UjianController::class, 'toggle'])->name('ujian.toggle');

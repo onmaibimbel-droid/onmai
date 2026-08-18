@@ -71,7 +71,7 @@
                     </a>
                 </div>
 
-                <form action="{{ route('soal.update', [$ujian->id, $soal->id]) }}" method="POST">
+                <form action="{{ route('soal.update', [$ujian->id, $soal->id]) }}" method="POST" data-encode-html>
                     @csrf
                     @method('PUT')
 
@@ -213,5 +213,7 @@
         initEditor('editor-d');
     });
 </script>
+
+@include('partials.encode-html-form')
 
 @endsection
